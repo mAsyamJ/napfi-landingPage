@@ -6,7 +6,7 @@ import { motion } from "framer-motion"
 import { useState } from "react"
 import { Reveal } from "./reveal"
 import { Check, AlertCircle } from "lucide-react"
-import { createClient } from "@/lib/supabase/client"
+import { createClient } from "@/lib/supabase/client-browser"
 
 export function WaitlistSection() {
   const [email, setEmail] = useState("")
@@ -28,15 +28,21 @@ export function WaitlistSection() {
 
       const supabase = createClient()
 
-      const { error: supabaseError } = await supabase.from("waitlist").insert([{ email: email.toLowerCase().trim() }])
+      console.log("[v0] Submitting email:", email.toLowerCase().trim())
+
+      const { data, error: supabaseError } = await supabase
+        .from("waitlist")
+        .insert([{ email: email.toLowerCase().trim() }])
+        .select()
+
+      console.log("[v0] Response data:", data)
+      console.log("[v0] Response error:", supabaseError)
 
       if (supabaseError) {
-        console.log("[v0] Supabase error:", supabaseError)
-
         if (supabaseError.code === "23505" || supabaseError.message?.includes("duplicate")) {
           setError("This email is already on the waitlist!")
-        } else if (supabaseError.message?.includes("permission denied")) {
-          setError("Unable to add email. Please try again.")
+        } else if (supabaseError.code === "PGRST116") {
+          setError("Permission denied. Please check back later.")
         } else {
           setError(supabaseError.message || "Failed to join waitlist. Please try again.")
         }
