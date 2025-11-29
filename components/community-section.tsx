@@ -8,7 +8,7 @@ export function CommunitySection() {
   const communityLinks = [
     {
       name: "Discord",
-      href: "https://discord.gg/R4QseghV",
+      href: "https://discord.gg/SpVfYsn7aq",
       icon: MessageCircle,
       description: "Join our community for real-time discussions",
     },

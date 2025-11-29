@@ -2,42 +2,6 @@
 @import "tw-animate-css";
 
 :root {
-  --background: oklch(0.995 0 0);
-  --foreground: oklch(0.12 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.12 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.12 0 0);
-  --primary: oklch(0.12 0 0);
-  --primary-foreground: oklch(0.98 0 0);
-  --secondary: oklch(0.96 0 0);
-  --secondary-foreground: oklch(0.12 0 0);
-  --muted: oklch(0.92 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.45 0.12 254.604);
-  --accent-foreground: oklch(0.98 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --destructive-foreground: oklch(0.98 0 0);
-  --border: oklch(0.96 0 0);
-  --input: oklch(0.98 0 0);
-  --ring: oklch(0.45 0.12 254.604);
-  --chart-1: oklch(0.45 0.12 254.604);
-  --chart-2: oklch(0.6 0.12 184.704);
-  --chart-3: oklch(0.65 0.10 127.392);
-  --chart-4: oklch(0.55 0.15 84.429);
-  --chart-5: oklch(0.70 0.12 70.08);
-  --radius: 0.75rem;
-  --sidebar: oklch(0.995 0 0);
-  --sidebar-foreground: oklch(0.12 0 0);
-  --sidebar-primary: oklch(0.12 0 0);
-  --sidebar-primary-foreground: oklch(0.98 0 0);
-  --sidebar-accent: oklch(0.45 0.12 254.604);
-  --sidebar-accent-foreground: oklch(0.98 0 0);
-  --sidebar-border: oklch(0.96 0 0);
-  --sidebar-ring: oklch(0.45 0.12 254.604);
-}
-
-.dark {
   --background: oklch(0.12 0 0);
   --foreground: oklch(0.98 0 0);
   --card: oklch(0.16 0 0);
@@ -70,6 +34,11 @@
   --sidebar-accent-foreground: oklch(0.98 0 0);
   --sidebar-border: oklch(0.25 0 0);
   --sidebar-ring: oklch(0.55 0.14 254.604);
+  
+  /* Nexus Studio Design Variables */
+  --glow-core: rgba(255, 255, 255, 0.8);
+  --glow-color: rgba(192, 132, 252, 0.35);
+  --glow-color-strong: rgba(192, 132, 252, 0.55);
 }
 
 @theme inline {
@@ -159,6 +128,11 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     scroll-behavior: smooth;
+    font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  }
+
+  .sf-pro-display {
+    font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
   }
 
   ::-webkit-scrollbar {
@@ -182,6 +156,293 @@
     @apply outline-2 outline-offset-2 outline-accent;
   }
 }
+
+/* Nexus Studio Animations */
+@keyframes fadeIn {
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes blurIn {
+  to { filter: blur(0); opacity: 1; }
+}
+
+@keyframes countUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+@keyframes fadeInLine {
+  0% { opacity: 0; transform: translateX(-10px); }
+  100% { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes highlightLine {
+  0% { background-color: rgba(59, 130, 246, 0.1); }
+  100% { background-color: transparent; }
+}
+
+/* Nexus Studio Utility Classes */
+.fade-in { 
+  opacity: 0; 
+  animation: fadeIn 1.2s ease-out forwards; 
+}
+
+.slide-up { 
+  transform: translateY(40px); 
+  opacity: 0; 
+  animation: slideUp 1s ease-out forwards; 
+}
+
+.blur-in { 
+  filter: blur(10px); 
+  opacity: 0; 
+  animation: blurIn 1.5s ease-out forwards; 
+}
+
+.stagger-1 { animation-delay: 0.2s; }
+.stagger-2 { animation-delay: 0.4s; }
+.stagger-3 { animation-delay: 0.6s; }
+.stagger-4 { animation-delay: 0.8s; }
+.stagger-5 { animation-delay: 1s; }
+.stagger-6 { animation-delay: 1.2s; }
+
+.glass-effect {
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+.counter {
+  animation: countUp 0.8s ease-out forwards;
+}
+
+/* Success Story Card Hover Effects */
+.success-card {
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.success-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  transition: left 0.8s ease-in-out;
+  z-index: 1;
+}
+
+.success-card:hover::before {
+  left: 100%;
+}
+
+.success-card:hover {
+  transform: translateY(-12px) scale(1.02);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.success-card:hover .card-image {
+  transform: scale(1.1);
+}
+
+.success-card:hover .card-gradient {
+  opacity: 0.8;
+}
+
+.success-card:hover .card-content {
+  transform: translateY(-4px);
+}
+
+.card-image {
+  transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card-gradient {
+  transition: opacity 0.6s ease;
+}
+
+.card-content {
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Glow Button Styles */
+.glow-btn {
+  --x: 50%;
+  --y: 50%;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  appearance: none;
+  border: 1px solid #e5e7eb;
+  background: #fff;
+  color: #111827;
+  padding: 14px 28px;
+  font-weight: 700;
+  border-radius: 9999px;
+  cursor: pointer;
+  letter-spacing: .2px;
+  transition: transform .2s ease, border-color .2s ease;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, .05), 0 8px 24px rgba(0, 0, 0, .08);
+  isolation: isolate;
+}
+
+.glow-btn:hover {
+  transform: translateY(-1px);
+  border-color: #d1d5db;
+}
+
+.glow-btn::before,
+.glow-btn::after {
+  content: "";
+  position: absolute;
+  inset: -4px;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity .2s ease;
+  will-change: background;
+  z-index: -1;
+}
+
+.glow-btn::before {
+  background:
+    radial-gradient(90px 90px at var(--x) var(--y),
+      var(--glow-core) 0%,
+      rgba(255, 255, 255, 0.25) 45%,
+      transparent 70%),
+    radial-gradient(140px 140px at var(--x) var(--y),
+      var(--glow-color-strong) 0%,
+      transparent 75%);
+  mix-blend-mode: screen;
+}
+
+.glow-btn::after {
+  inset: -8px;
+  border-radius: inherit;
+  background:
+    radial-gradient(200px 200px at var(--x) var(--y),
+      var(--glow-color) 0%,
+      transparent 80%);
+  filter: blur(20px);
+  z-index: -2;
+}
+
+.glow-btn:hover::before,
+.glow-btn:hover::after {
+  opacity: 1;
+}
+
+.icon-box {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.icon-box svg {
+  width: 20px;
+  height: 20px;
+  stroke: currentColor;
+}
+
+/* Typing Animation Classes */
+.typing-cursor {
+  color: #3b82f6;
+  font-weight: bold;
+  animation: blink 1s infinite;
+  margin-left: 2px;
+}
+
+.typing-text {
+  opacity: 0;
+  animation: fadeInLine 0.3s ease-out forwards;
+}
+
+.animate-typing-1 { animation: fadeInLine 0.5s ease-out 0s forwards; }
+.animate-typing-1 .typing-text { animation-delay: 0.2s; }
+
+.animate-typing-2 { animation: fadeInLine 0.5s ease-out 1s forwards; opacity: 0; }
+.animate-typing-2 .typing-text { animation-delay: 1.2s; }
+
+.animate-typing-3 { animation: fadeInLine 0.3s ease-out 1.8s forwards; opacity: 0; }
+
+.animate-typing-4 { animation: fadeInLine 0.5s ease-out 2s forwards; opacity: 0; }
+.animate-typing-4 .typing-text { animation-delay: 2.2s; }
+
+.animate-typing-5 { animation: fadeInLine 0.5s ease-out 2.5s forwards; opacity: 0; }
+.animate-typing-5 .typing-text { animation-delay: 2.7s; }
+
+.animate-typing-6 { animation: fadeInLine 0.5s ease-out 3s forwards; opacity: 0; }
+.animate-typing-6 .typing-text { animation-delay: 3.2s; }
+
+.animate-typing-7 { animation: fadeInLine 0.5s ease-out 3.5s forwards; opacity: 0; }
+.animate-typing-7 .typing-text { animation-delay: 3.7s; }
+
+.animate-typing-8 { animation: fadeInLine 0.3s ease-out 3.8s forwards; opacity: 0; }
+
+.animate-typing-9 { animation: fadeInLine 0.5s ease-out 4s forwards; opacity: 0; }
+.animate-typing-9 .typing-text { animation-delay: 4.2s; }
+
+.animate-typing-10 { animation: fadeInLine 0.5s ease-out 5s forwards; opacity: 0; }
+.animate-typing-10 .typing-text { animation-delay: 5.2s; }
+
+.animate-typing-11 { animation: fadeInLine 0.5s ease-out 5.5s forwards; opacity: 0; }
+.animate-typing-11 .typing-text { animation-delay: 5.7s; }
+
+.animate-typing-12 { animation: fadeInLine 0.3s ease-out 5.8s forwards; opacity: 0; }
+
+.animate-typing-13 { animation: fadeInLine 0.5s ease-out 6s forwards; opacity: 0; }
+.animate-typing-13 .typing-text { animation-delay: 6.2s; }
+
+.animate-typing-14 { animation: fadeInLine 0.5s ease-out 6.5s forwards; opacity: 0; }
+.animate-typing-14 .typing-text { animation-delay: 6.7s; }
+
+.animate-typing-15 { animation: fadeInLine 0.5s ease-out 7s forwards; opacity: 0; }
+.animate-typing-15 .typing-text { animation-delay: 7.2s; }
+
+.animate-typing-16 { animation: fadeInLine 0.5s ease-out 7.5s forwards; opacity: 0; }
+.animate-typing-16 .typing-text { animation-delay: 7.7s; }
+
+/* Highlight newly typed lines */
+.animate-typing-1, .animate-typing-2, .animate-typing-4, 
+.animate-typing-5, .animate-typing-6, .animate-typing-7, 
+.animate-typing-9, .animate-typing-10, .animate-typing-11, 
+.animate-typing-13, .animate-typing-14, .animate-typing-15, 
+.animate-typing-16 {
+  animation-fill-mode: both;
+  border-radius: 4px;
+  padding: 2px 4px;
+  margin: -2px -4px;
+}
+
+.animate-typing-1:after { animation: highlightLine 1s ease-out 0.5s; }
+.animate-typing-2:after { animation: highlightLine 1s ease-out 1.5s; }
+.animate-typing-4:after { animation: highlightLine 1s ease-out 2.5s; }
+.animate-typing-5:after { animation: highlightLine 1s ease-out 3s; }
+.animate-typing-6:after { animation: highlightLine 1s ease-out 3.5s; }
+.animate-typing-7:after { animation: highlightLine 1s ease-out 4s; }
+.animate-typing-9:after { animation: highlightLine 1s ease-out 4.5s; }
+.animate-typing-10:after { animation: highlightLine 1s ease-out 5.5s; }
+.animate-typing-11:after { animation: highlightLine 1s ease-out 6s; }
+.animate-typing-13:after { animation: highlightLine 1s ease-out 6.5s; }
+.animate-typing-14:after { animation: highlightLine 1s ease-out 7s; }
+.animate-typing-15:after { animation: highlightLine 1s ease-out 7.5s; }
+.animate-typing-16:after { animation: highlightLine 1s ease-out 8s; }
 
 @layer utilities {
   .text-display {

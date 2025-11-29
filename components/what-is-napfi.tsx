@@ -46,11 +46,15 @@ export function WhatIsNapfi() {
               </div>
             </div>
           </Reveal>
-
           <Reveal delay={0.3}>
             <div className="bg-gradient-to-br from-neutral-100 to-neutral-50 rounded-2xl p-12 h-96 flex items-center justify-center">
-              <div className="text-center text-neutral-500">
-                <p className="text-lg">Visual representation of NAPFI platform</p>
+              <div className="flex items-center justify-center h-full">
+                <img
+                  src={`https://images.weserv.nl/?url=chatgpt.com/s/m_691c7490150c8191bdd99829c378d455`}
+                  alt="NAPFI visual illustration"
+                  alt="Visual representation of NAPFI"
+                  className="max-h-full object-contain rounded-xl shadow-lg"
+                />
               </div>
             </div>
           </Reveal>
