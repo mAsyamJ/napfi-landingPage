@@ -1,9 +1,11 @@
 "use client"
 
+import type React from "react"
+
 import { motion } from "framer-motion"
 import { useState } from "react"
 import { Reveal } from "./reveal"
-import { Check, AlertCircle } from 'lucide-react'
+import { Check, AlertCircle } from "lucide-react"
 import { createClient } from "@/lib/supabase/client"
 
 export function WaitlistSection() {
@@ -16,20 +18,27 @@ export function WaitlistSection() {
     e.preventDefault()
     setIsLoading(true)
     setError(null)
-    
+
     try {
+      if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        setError("Please enter a valid email address")
+        setIsLoading(false)
+        return
+      }
+
       const supabase = createClient()
-      
-      const { data, error: supabaseError } = await supabase
-        .from('waitlist')
-        .insert([{ email }])
-        .select()
+
+      const { error: supabaseError } = await supabase.from("waitlist").insert([{ email: email.toLowerCase().trim() }])
 
       if (supabaseError) {
-        if (supabaseError.code === '23505') {
-          setError('This email is already on the waitlist!')
+        console.log("[v0] Supabase error:", supabaseError)
+
+        if (supabaseError.code === "23505" || supabaseError.message?.includes("duplicate")) {
+          setError("This email is already on the waitlist!")
+        } else if (supabaseError.message?.includes("permission denied")) {
+          setError("Unable to add email. Please try again.")
         } else {
-          setError(supabaseError.message || 'Failed to join waitlist')
+          setError(supabaseError.message || "Failed to join waitlist. Please try again.")
         }
         setIsLoading(false)
         return
@@ -44,7 +53,8 @@ export function WaitlistSection() {
         setSubmitted(false)
       }, 3000)
     } catch (err) {
-      setError('An unexpected error occurred. Please try again.')
+      console.log("[v0] Error:", err)
+      setError("An unexpected error occurred. Please try again.")
       setIsLoading(false)
     }
   }
@@ -54,9 +64,7 @@ export function WaitlistSection() {
       <div className="container-custom px-4 md:px-6">
         <div className="max-w-2xl mx-auto text-center">
           <Reveal>
-            <h2 className="text-display-sm mb-4 text-neutral-900">
-              Get early access
-            </h2>
+            <h2 className="text-display-sm mb-4 text-neutral-900">Get early access</h2>
           </Reveal>
 
           <Reveal delay={0.1}>
@@ -77,7 +85,7 @@ export function WaitlistSection() {
               placeholder="your@email.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              disabled={submitted}
+              disabled={submitted || isLoading}
               className="flex-1 px-4 py-3.5 bg-white border border-neutral-200 rounded-lg text-neutral-900 placeholder-neutral-400 focus:outline-none focus:ring-2 focus:ring-accent-500 focus:ring-offset-0 transition-all disabled:opacity-50 text-base"
               required
             />
